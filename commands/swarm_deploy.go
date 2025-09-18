@@ -134,6 +134,19 @@ func (cmd *SwarmDeployCommand) Run(cmdCtx *exec.CommandExecutionContext) error {
 		}
 	}
 
+	composeFilePaths := make([]string, len(cmd.ComposeRelativeFilePaths))
+	for i := 0; i < len(cmd.ComposeRelativeFilePaths); i++ {
+		composeFilePaths[i] = path.Join(clonePath, cmd.ComposeRelativeFilePaths[i])
+	}
+
+	sopsErr := exec.DecryptSops(composeFilePaths, cmd.Env)
+	if sopsErr != nil {
+		log.Error().
+			Err(sopsErr).
+			Msg("Failed to decrypt SOPS files")
+		return exec.ErrDeployComposeFailure
+	}
+
 	if err := deploySwarmStack(*cmd, clonePath); err != nil {
 		return err
 	}

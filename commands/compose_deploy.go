@@ -115,6 +115,14 @@ func (cmd *DeployCommand) Run(cmdCtx *exec.CommandExecutionContext) error {
 		composeFilePaths[i] = path.Join(clonePath, cmd.ComposeRelativeFilePaths[i])
 	}
 
+	sopsErr := exec.DecryptSops(composeFilePaths, cmd.Env)
+	if sopsErr != nil {
+		log.Error().
+			Err(sopsErr).
+			Msg("Failed to decrypt SOPS files")
+		return exec.ErrDeployComposeFailure
+	}
+
 	log.Info().
 		Strs("composeFilePaths", composeFilePaths).
 		Str("workingDirectory", clonePath).

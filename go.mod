@@ -2,13 +2,11 @@ module github.com/portainer/compose-unpacker
 
 go 1.25.0
 
-replace github.com/portainer/portainer => ../../../package/server-ce
-
 require (
 	github.com/alecthomas/kong v0.6.1
 	github.com/docker/cli v28.2.1+incompatible
 	github.com/go-git/go-git/v5 v5.13.0
-	github.com/portainer/portainer v0.6.1-0.20250108192604-24fdb1f60020
+	github.com/portainer/portainer v0.6.1-0.20250918121929-2e7acc73d805
 	github.com/rs/zerolog v1.29.0
 )
 
